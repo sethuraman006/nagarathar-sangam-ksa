@@ -1,0 +1,98 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    password  String
+    name      String
+    role      String   @default("admin")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Page {
+    id        String   @id @default(cuid())
+    title     String
+    slug      String   @unique
+    content   String   @db.Text
+    status    String   @default("draft")
+    sortOrder Int      @default(0)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model GalleryCategory {
+    id        String         @id @default(cuid())
+    name      String
+    slug      String         @unique
+    sortOrder Int            @default(0)
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+    images    GalleryImage[]
+}
+
+model GalleryImage {
+    id         String          @id @default(cuid())
+    title      String
+    url        String
+    caption    String?
+    sortOrder  Int             @default(0)
+    categoryId String
+    category   GalleryCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    createdAt  DateTime        @default(now())
+    updatedAt  DateTime        @updatedAt
+}
+
+model Form {
+    id          String           @id @default(cuid())
+    name        String
+    slug        String           @unique
+    description String?
+    fields      Json
+    status      String           @default("active")
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    submissions FormSubmission[]
+}
+
+model FormSubmission {
+    id        String   @id @default(cuid())
+    formId    String
+    form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+    data      Json
+    status    String   @default("new")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Setting {
+    id    String @id @default(cuid())
+    key   String @unique
+    value String @db.Text
+}
+
+model Navigation {
+    id        String   @id @default(cuid())
+    label     String
+    url       String
+    sortOrder Int      @default(0)
+    parentId  String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Media {
+    id        String   @id @default(cuid())
+    filename  String
+    url       String
+    mimeType  String
+    size      Int
+    createdAt DateTime @default(now())
+}

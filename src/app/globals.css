@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ═══════════════════════════════════════════════
+   Door Entrance Animation Keyframes
+   ═══════════════════════════════════════════════ */
+@keyframes doorDustFloat {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-200px) translateX(30px) scale(0.3); opacity: 0; }
+}
+
+@keyframes doorCameraZoom {
+  0% { transform: scale(1) translateY(0); }
+  100% { transform: scale(1.15) translateY(-20px); }
+}
+
+@keyframes doorCreak {
+  0% { transform: perspective(1200px) rotateY(0deg); }
+  30% { transform: perspective(1200px) rotateY(-25deg); }
+  50% { transform: perspective(1200px) rotateY(-22deg); }
+  70% { transform: perspective(1200px) rotateY(-55deg); }
+  85% { transform: perspective(1200px) rotateY(-52deg); }
+  100% { transform: perspective(1200px) rotateY(-72deg); }
+}
+
+@keyframes doorCreakRight {
+  0% { transform: perspective(1200px) rotateY(0deg); }
+  30% { transform: perspective(1200px) rotateY(25deg); }
+  50% { transform: perspective(1200px) rotateY(22deg); }
+  70% { transform: perspective(1200px) rotateY(55deg); }
+  85% { transform: perspective(1200px) rotateY(52deg); }
+  100% { transform: perspective(1200px) rotateY(72deg); }
+}
+
+@keyframes doorLightRay {
+  0% { opacity: 0; transform: scaleY(0.5) scaleX(0.3); }
+  50% { opacity: 0.8; transform: scaleY(1) scaleX(0.8); }
+  100% { opacity: 0.4; transform: scaleY(1.2) scaleX(1); }
+}
+
+@keyframes doorParticleBurst {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+  100% { transform: scale(1) rotate(360deg); opacity: 0.8; }
+}
+
+/* ═══════════════════════════════════════════════
+   Public Site Animation Keyframes
+   ═══════════════════════════════════════════════ */
+
+/* Site reveal after door opens */
+@keyframes siteRevealFade {
+  0% { opacity: 0; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.siteRevealIn {
+  animation: siteRevealFade 1s ease-out forwards;
+}
+
+/* Floating particles on the site */
+@keyframes siteParticleFloat {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 0.15; }
+  50% { transform: translateY(-50vh) translateX(20px); opacity: 0.1; }
+  90% { opacity: 0; }
+  100% { transform: translateY(-100vh) translateX(-10px); }
+}
+
+/* Hero logo floating animation */
+.heroLogoFloat {
+  animation: heroFloat 4s ease-in-out infinite;
+}
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-18px) scale(1.02); }
+}
+
+/* Hero logo subtle glow pulse */
+.heroLogoGlow {
+  animation: heroGlow 3s ease-in-out infinite;
+}
+@keyframes heroGlow {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(212,175,55,0.3)) drop-shadow(0 0 4px rgba(212,175,55,0.15)); }
+  50% { filter: drop-shadow(0 0 30px rgba(212,175,55,0.6)) drop-shadow(0 0 60px rgba(212,175,55,0.25)); }
+}
+
+/* Hero logo glow for dark mode (includes invert to make logo white) */
+.heroLogoGlowDark {
+  animation: heroGlowDark 3s ease-in-out infinite;
+}
+@keyframes heroGlowDark {
+  0%, 100% { filter: invert(1) brightness(1) drop-shadow(0 0 12px rgba(212,175,55,0.3)) drop-shadow(0 0 4px rgba(212,175,55,0.15)); }
+  50% { filter: invert(1) brightness(1) drop-shadow(0 0 30px rgba(212,175,55,0.6)) drop-shadow(0 0 60px rgba(212,175,55,0.25)); }
+}
+
+/* Hero title reveal */
+.heroTitleReveal {
+  animation: heroTitleIn 1s ease-out 0.2s both;
+}
+@keyframes heroTitleIn {
+  0% { opacity: 0; transform: translateY(40px) scale(0.95); letter-spacing: 0.4em; }
+  60% { opacity: 1; transform: translateY(-4px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: normal; }
+}
+
+/* Hero decorative line reveal */
+.heroLineReveal {
+  animation: heroLineIn 0.8s ease-out 0.6s both;
+}
+@keyframes heroLineIn {
+  0% { transform: scaleX(0); opacity: 0; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+/* Hero subtitle reveal */
+.heroSubReveal {
+  animation: heroSubIn 1s ease-out 0.8s both;
+}
+@keyframes heroSubIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 0.85; transform: translateY(0); }
+}
+
+/* Hero buttons reveal */
+.heroButtonsReveal {
+  animation: heroBtnIn 1s ease-out 1.1s both;
+}
+@keyframes heroBtnIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll indicator bounce */
+.scrollIndicator {
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
+  50% { transform: translateX(-50%) translateY(8px); opacity: 1; }
+}
+
+/* Scroll dot animation */
+.scrollDot {
+  animation: scrollDotMove 1.5s ease-in-out infinite;
+}
+@keyframes scrollDotMove {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
+}
+
+/* Stats shimmer */
+.statsShimmer {
+  animation: statsShimmerMove 3s ease-in-out infinite;
+}
+@keyframes statsShimmerMove {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* About card floating */
+.aboutCardFloat {
+  animation: aboutFloat 6s ease-in-out infinite;
+}
+@keyframes aboutFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(0.5deg); }
+  75% { transform: translateY(4px) rotate(-0.5deg); }
+}
+
+/* Form slide in */
+.formSlideIn {
+  animation: formSlide 0.5s ease-out both;
+}
+@keyframes formSlide {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Form field stagger reveal */
+.formFieldReveal {
+  animation: formFieldIn 0.4s ease-out both;
+}
+@keyframes formFieldIn {
+  0% { opacity: 0; transform: translateX(-10px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Form success animation */
+.formSuccessReveal {
+  animation: formSuccessIn 0.6s ease-out both;
+}
+@keyframes formSuccessIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  50% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Form modal overlay */
+.formModalOverlay {
+  animation: formOverlayIn 0.4s ease-out both;
+}
+@keyframes formOverlayIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Form modal content */
+.formModalIn {
+  animation: formModalSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes formModalSlideIn {
+  0% { opacity: 0; transform: translateY(40px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Lightbox animations */
+.lightboxIn {
+  animation: lightboxFadeIn 0.3s ease-out both;
+}
+@keyframes lightboxFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.lightboxImgReveal {
+  animation: lightboxImgIn 0.4s ease-out 0.1s both;
+}
+@keyframes lightboxImgIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
