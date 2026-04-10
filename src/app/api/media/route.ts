@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth";
-import { unlink } from "fs/promises";
-import { join } from "path";
+import { del } from "@vercel/blob";
 
 export const dynamic = "force-dynamic";
 
@@ -28,9 +27,11 @@ export async function DELETE(request: NextRequest) {
     if (!media) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     try {
-      await unlink(join(process.cwd(), "public", media.url));
+      if (media.url.includes("vercel-storage.com") || media.url.includes("blob.vercel-storage")) {
+        await del(media.url);
+      }
     } catch {
-      // file may already be removed
+      // blob may already be removed
     }
 
     await prisma.media.delete({ where: { id } });

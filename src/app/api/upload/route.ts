@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import { prisma } from "@/lib/prisma";
+import { put } from "@vercel/blob";
 import crypto from "crypto";
 
-const UPLOAD_DIR = join(process.cwd(), "public", "uploads");
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp", "application/pdf"];
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -29,22 +27,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File too large (max 10MB)" }, { status: 400 });
     }
 
-    await mkdir(UPLOAD_DIR, { recursive: true });
-
     const ext = file.name.split(".").pop() || "bin";
-    const safeName = `${crypto.randomUUID()}.${ext}`;
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    const filePath = join(UPLOAD_DIR, safeName);
-    await writeFile(filePath, bytes);
+    const safeName = `uploads/${crypto.randomUUID()}.${ext}`;
 
-    const url = `/uploads/${safeName}`;
+    const blob = await put(safeName, file, {
+      access: "public",
+      addRandomSuffix: false,
+    });
+
     const media = await prisma.media.create({
-      data: { filename: file.name, url, mimeType: file.type, size: file.size },
+      data: { filename: file.name, url: blob.url, mimeType: file.type, size: file.size },
     });
 
     return NextResponse.json(media, { status: 201 });
   } catch (e: unknown) {
     if (e instanceof Error && e.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("Upload error:", e);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

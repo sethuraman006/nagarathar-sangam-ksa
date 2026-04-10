@@ -7,3 +7,4 @@ public/uploads/*
 .vercel
 .neon
 .vercel
+.env*.local
